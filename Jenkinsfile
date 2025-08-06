@@ -41,7 +41,8 @@ pipeline {
             steps {
                 script {
                     echo "Running Docker container from image: ${env.IMAGE_NAME}"
-                    sh "docker run -d -p 8080:80 ${env.IMAGE_NAME}"
+                    // Changed from 8080 to 8090 because 8080 is used by Jenkins
+                    sh "docker run -d -p 8090:80 ${env.IMAGE_NAME}"
                 }
             }
         }
@@ -49,7 +50,7 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds',
+                    credentialsId: 'dockerhub-creds',  // This ID must match the one you saved in Jenkins
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
